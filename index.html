@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chat Group Mobile</title>
+    <style>
+    * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        -webkit-text-size-adjust: 100%;
+        touch-action: manipulation;
+    }
+
+    #chatIcon {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        background-color: #e74c3c;
+        color: white;
+        border: 2px solid white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 13px;
+        text-align: center;
+        padding: 5px;
+        z-index: 1000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        user-select: none;
+    }
+
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        z-index: 999;
+        padding: 16px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #usernameInput {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        border: 1px solid #3498db;
+        background-color: #e3f2fd;
+    }
+
+    #toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    #toolbar button, #toolbar input[type="color"] {
+        padding: 8px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    #textEditor {
+        width: 100%;
+        min-height: 180px;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: white;
+        margin-bottom: 10px;
+        overflow-y: auto;
+    }
+
+    .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: auto;
+    }
+
+    .button-group button, .message-buttons button {
+        flex: 1 1 45%;
+        padding: 12px;
+        font-size: 15px;
+        font-weight: bold;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    #sendBtn {
+        flex: 1 1 100%;
+        background-color: #3498db;
+        color: white;
+    }
+
+    #startBtn { background-color: #2ecc71; color: white; }
+    #stopBtn { background-color: #e74c3c; color: white; }
+    #clearBtn { background-color: #f39c12; color: white; }
+    #clearAllBtn { background-color: #9b59b6; color: white; }
+    #replyBtn { background-color: #3498db; color: white; }
+    #resendBtn { background-color: #2ecc71; color: white; }
+    #clearHistoryBtn { background-color: #95a5a6; color: white; }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #555;
+    }
+
+    #messageHistory {
+        max-height: 25vh;
+        overflow-y: auto;
+        font-size: 14px;
+        padding: 10px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background-color: #fafafa;
+        margin-bottom: 10px;
+    }
+
+    #messageContent {
+        font-size: 16px;
+        padding: 12px;
+        background-color: #f9f9f9;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        white-space: pre-wrap;
+        margin-bottom: 10px;
+        max-height: 30vh;
+        overflow-y: auto;
+    }
+
+    .message-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    @media (min-width: 600px) {
+        .popup {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 500px;
+            height: auto;
+            max-height: 90vh;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div id="chatIcon">Chat<br>Group</div>
+    
+    <div id="editorPopup" class="popup">
+        <button class="close-btn" onclick="toggleChat()">×</button>
+        <input id="usernameInput" placeholder="Tên của bạn" />
+        
+        <div id="toolbar">
+            <button onclick="formatText('bold')"><b>B</b></button>
+            <button onclick="formatText('italic')"><i>I</i></button>
+            <button onclick="formatText('underline')"><u>U</u></button>
+            <button onclick="formatText('strikeThrough')"><s>S</s></button>
+            <input type="color" onchange="formatText('foreColor', this.value)" title="Màu chữ" style="width: 40px; height: 36px; padding: 0; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+        
+        <div contenteditable="true" id="textEditor" placeholder="Nhập tin nhắn hoặc dùng nút 'Bắt đầu nói'..."></div>
+
+        <div class="button-group">
+            <button id="startBtn">🎤 Nói</button>
+            <button id="stopBtn" disabled>⏹️ Dừng</button>
+            <button id="clearBtn">🗑️ Xóa</button>
+            <button id="clearAllBtn">💣 Xóa Tất Cả</button>
+            <button id="sendBtn">✉️ Gửi</button>
+        </div>
+        <div id="recordingStatus" class="status"></div>
+        <div id="interimResult" class="interim"></div>
+    </div>
+    
+    <div id="messagePopup" class="popup">
+        <button class="close-btn" onclick="toggleChat()">×</button>
+        <div id="messageHistory"></div>
+        <div id="messageContent"></div>
+        <div class="message-buttons">
+            <button id="resendBtn">🔄 Nhắc lại</button>
+            <button id="clearHistoryBtn">🧹 Xóa Lịch Sử</button>
+            <button id="replyBtn">↩️ Trả lời</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    
+    <script>
+        // Khởi tạo Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAFwm5cNlogeAyPyj28Xkr-5BgpAD53TlI",
+            authDomain: "idecopharma-2670a.firebaseapp.com",
+            databaseURL: "https://idecopharma-2670a-default-rtdb.firebaseio.com",
+            projectId: "idecopharma-2670a",
+            storageBucket: "idecopharma-2670a.appspot.com",
+            messagingSenderId: "58814969009",
+            appId: "1:58814969009:web:cce0d22b647f2ef78b5e90",
+            measurementId: "G-C9C9LVFRTH"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+        // DOM elements
+        const elements = {
+            chatIcon: document.getElementById('chatIcon'),
+            editorPopup: document.getElementById('editorPopup'),
+            messagePopup: document.getElementById('messagePopup'),
+            textEditor: document.getElementById('textEditor'),
+            startBtn: document.getElementById('startBtn'),
+            stopBtn: document.getElementById('stopBtn'),
+            clearBtn: document.getElementById('clearBtn'),
+            clearAllBtn: document.getElementById('clearAllBtn'),
+            sendBtn: document.getElementById('sendBtn'),
+            replyBtn: document.getElementById('replyBtn'),
+            resendBtn: document.getElementById('resendBtn'),
+            messageContent: document.getElementById('messageContent'),
+            recordingStatus: document.getElementById('recordingStatus'),
+            interimResult: document.getElementById('interimResult'),
+            usernameInput: document.getElementById('usernameInput'),
+            clearHistoryBtn: document.getElementById('clearHistoryBtn'),
+            messageHistory: document.getElementById('messageHistory')
+        };
+        
+        // Biến toàn cục
+        let recognition;
+        let isListening = false;
+        let lastMessageTimestamp = 0;
+        let currentMessage = '';
+        
+        // Khởi tạo nhận dạng giọng nói
+        function initSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'vi-VN';
+                
+                recognition.onstart = () => {
+                    isListening = true;
+                    elements.startBtn.disabled = true;
+                    elements.stopBtn.disabled = false;
+                    elements.recordingStatus.textContent = "Đang nghe... Hãy nói gì đó";
+                    elements.textEditor.innerHTML = '';
+                };
+                
+                recognition.onresult = (event) => {
+                    let interimTranscript = '';
+                    let finalTranscript = '';
+                    
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcript + ' ';
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+                    
+                    elements.textEditor.innerHTML = finalTranscript;
+                    elements.interimResult.textContent = interimTranscript;
+                };
+                
+                recognition.onerror = (event) => {
+                    console.error('Speech recognition error', event.error);
+                    elements.recordingStatus.textContent = "Lỗi: " + event.error;
+                    stopRecording();
+                };
+                
+                recognition.onend = () => {
+                    isListening = false;
+                    elements.startBtn.disabled = false;
+                    elements.stopBtn.disabled = true;
+                };
+            } else {
+                elements.recordingStatus.textContent = "Trình duyệt không hỗ trợ nhận dạng giọng nói";
+                elements.startBtn.disabled = true;
+            }
+        }
+        
+        // Hàm làm sạch HTML
+        function cleanHtmlContent(html) {
+            if (!html) return '';
+            
+            // Tạo phần tử tạm để phân tích HTML
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+            
+            // Lấy nội dung văn bản thuần túy
+            let cleanText = temp.textContent || temp.innerText || '';
+            
+            // Chuẩn hóa khoảng trắng
+            cleanText = cleanText.replace(/\s+/g, ' ').trim();
+            
+            return cleanText;
+        }
+        
+        // Xử lý sự kiện
+        function setupEventListeners() {
+            elements.chatIcon.addEventListener('click', toggleChat);
+            elements.startBtn.addEventListener('click', startRecording);
+            elements.stopBtn.addEventListener('click', stopRecording);
+            elements.clearBtn.addEventListener('click', clearText);
+            elements.clearAllBtn.addEventListener('click', clearAllMessages);
+            elements.sendBtn.addEventListener('click', sendMessage);
+            elements.replyBtn.addEventListener('click', replyMessage);
+            elements.resendBtn.addEventListener('click', resendMessage);
+            elements.clearHistoryBtn.addEventListener('click', clearHistory);
+            
+            // Load username từ localStorage
+            elements.usernameInput.value = localStorage.getItem('chat_username') || '';
+            
+            // Theo dõi tin nhắn mới từ Firebase
+            database.ref('messages').limitToLast(1).on('child_added', (snapshot) => {
+                const message = snapshot.val();
+                if (message.timestamp > lastMessageTimestamp) {
+                    lastMessageTimestamp = message.timestamp;
+                    currentMessage = cleanHtmlContent(message.text);
+                    showMessage(currentMessage);
+                    updateMessageHistory();
+                }
+            });
+            
+            // Tải lịch sử tin nhắn
+            updateMessageHistory();
+        }
+        
+        // Các hàm chức năng
+        function toggleChat() {
+            if (elements.editorPopup.style.display === 'flex' || elements.messagePopup.style.display === 'flex') {
+                closeAllPopups();
+            } else {
+                if (currentMessage) {
+                    showMessagePopup();
+                } else {
+                    showEditorPopup();
+                }
+            }
+        }
+        
+        function closeAllPopups() {
+            elements.editorPopup.style.display = 'none';
+            elements.messagePopup.style.display = 'none';
+            if (isListening && recognition) {
+                recognition.stop();
+            }
+        }
+        
+        function showEditorPopup() {
+            closeAllPopups();
+            elements.editorPopup.style.display = 'flex';
+            elements.textEditor.focus();
+        }
+        
+        function showMessagePopup() {
+            closeAllPopups();
+            elements.messagePopup.style.display = 'flex';
+        }
+        
+        function startRecording() {
+            if (recognition) {
+                elements.textEditor.innerHTML = '';
+                elements.interimResult.textContent = '';
+                recognition.start();
+            }
+        }
+        
+        function stopRecording() {
+            if (isListening && recognition) {
+                recognition.stop();
+            }
+        }
+        
+        function clearText() {
+            elements.textEditor.innerHTML = '';
+            elements.interimResult.textContent = '';
+            elements.recordingStatus.textContent = '';
+        }
+        
+        function clearAllMessages() {
+            if (confirm("Bạn có chắc muốn xóa TẤT CẢ tin nhắn?")) {
+                database.ref('messages').remove()
+                    .then(() => {
+                        currentMessage = '';
+                        elements.messageContent.textContent = '';
+                        showEditorPopup();
+                    });
+            }
+        }
+        
+        function sendMessage() {
+            const rawContent = elements.textEditor.innerHTML;
+            const cleanText = cleanHtmlContent(rawContent);
+            
+            if (cleanText.trim()) {
+                const timestamp = Date.now();
+                const sender = elements.usernameInput.value.trim() || 'Ẩn danh';
+                
+                // Lưu cả bản gốc và bản đã làm sạch
+                database.ref('messages').push({
+                    text: rawContent,
+                    cleanText: cleanText,
+                    sender: sender,
+                    timestamp: timestamp
+                });
+                
+                // Lưu username
+                localStorage.setItem('chat_username', sender);
+                
+                // Cập nhật giao diện
+                lastMessageTimestamp = timestamp;
+                currentMessage = cleanText;
+                showMessage(cleanText);
+                closeAllPopups();
+                clearText();
+                
+                // Dừng ghi âm nếu đang chạy
+                stopRecording();
+            }
+        }
+        
+        function showMessage(text) {
+            elements.messageContent.textContent = cleanHtmlContent(text);
+            showMessagePopup();
+        }
+        
+        function replyMessage() {
+            showEditorPopup();
+        }
+        
+        function resendMessage() {
+            if (currentMessage) {
+                const timestamp = Date.now();
+                database.ref('messages').push({
+                    text: currentMessage,
+                    cleanText: currentMessage,
+                    timestamp: timestamp
+                });
+                lastMessageTimestamp = timestamp;
+            }
+        }
+        
+        function updateMessageHistory() {
+            database.ref('messages').limitToLast(8).on('value', (snapshot) => {
+                elements.messageHistory.innerHTML = '';
+                snapshot.forEach((childSnapshot) => {
+                    const message = childSnapshot.val();
+                    const displayText = message.cleanText || cleanHtmlContent(message.text);
+                    const msgElement = document.createElement('div');
+                    msgElement.textContent = `• ${message.sender || 'Ẩn danh'}: ${displayText}`;
+                    msgElement.style.padding = '6px 0';
+                    msgElement.style.borderBottom = '1px dashed #ddd';
+                    elements.messageHistory.appendChild(msgElement);
+                });
+            });
+        }
+        
+        function clearHistory() {
+            if (confirm("Xóa toàn bộ lịch sử chat?")) {
+                database.ref('messages').remove();
+            }
+        }
+        
+        function formatText(command, value = null) {
+            document.execCommand(command, false, value);
+            elements.textEditor.focus();
+        }
+        
+        // Khởi động ứng dụng
+        function initApp() {
+            initSpeechRecognition();
+            setupEventListeners();
+        }
+        
+        // Chạy ứng dụng khi trang tải xong
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
