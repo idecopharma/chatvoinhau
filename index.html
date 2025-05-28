@@ -530,21 +530,15 @@
                     });
             }
         }
-       // Hàm làm sạch HTML triệt để hơn
-        function cleanHtmlContent(html) {
-            if (!html) return '';
-            
-            // Thay thế các thẻ <br> bằng xuống dòng
-            let cleanText = html.replace(/<br\s*\/?>/gi, "\n");
-            
-            // Loại bỏ tất cả các thẻ HTML khác
-            cleanText = cleanText.replace(/<[^>]*>/g, '');
-            
-            // Thay thế nhiều khoảng trắng thành 1 khoảng trắng
-            cleanText = cleanText.replace(/\s+/g, ' ').trim();
-            
-            return cleanText;
-        }
+      function cleanHtmlContent(html) {
+    if (!html) return '';
+    html = html.replace(/&nbsp;/g, ' '); // <- thêm dòng này
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    let cleanText = temp.textContent || temp.innerText || '';
+    cleanText = cleanText.replace(/\s+/g, ' ').trim();
+    return cleanText;
+}
         // Sửa đổi hàm sendMessage
         function sendMessage() {
             let messageText = textEditor.innerHTML;
