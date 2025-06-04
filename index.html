@@ -5,272 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Chat Group</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            position: relative;
-            -webkit-text-size-adjust: 100%;
-            touch-action: manipulation;
-        }
-        
-        #chatIcon {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            background-color: red;
-            color: white;
-            border: 2px solid white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            font-weight: bold;
-            z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            font-size: 12px;
-            text-align: center;
-            padding: 5px;
-        }
-        
-        #chatIcon:hover {
-            opacity: 0.9;
-            transform: scale(1.05);
-        }
-        
-        .popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            z-index: 999;
-            padding: 15px;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        #editorPopup {
-            flex-direction: column;
-        }
-        
-        #messagePopup {
-            flex-direction: column;
-        }
-        
-        #textEditor {
-            width: 100%;
-            height: 200px;
-            margin-bottom: 10px;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            resize: none;
-            font-size: 16px;
-            line-height: 1.5;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .button-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 10px;
-            width: 100%;
-        }
-        
-        button {
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            transition: all 0.2s;
-            width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        button:active {
-            transform: scale(0.98);
-        }
-        
-        #startBtn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        
-        #stopBtn {
-            background-color: #f44336;
-            color: white;
-        }
-        
-        #clearBtn {
-            background-color: #ff9800;
-            color: white;
-        }
-        
-        #clearAllBtn {
-            background-color: #9c27b0;
-            color: white;
-        }
-        
-        #sendBtn {
-            background-color: #2196F3;
-            color: white;
-            grid-column: span 2;
-        }
-        
-        #replyBtn {
-            background-color: #2196F3;
-            color: white;
-        }
-        
-        #resendBtn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        
-        #messageContent {
-            font-size: 16px;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            padding: 12px;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            max-height: 50vh;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            word-wrap: break-word;
-        }
-        
-        .status {
-            margin-top: 10px;
-            font-style: italic;
-            color: #666;
-            font-size: 13px;
-        }
-        
-        .interim {
-            color: #999;
-            font-style: italic;
-            margin-top: 5px;
-            font-size: 14px;
-        }
-        
-        .message-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 15px;
-            width: 100%;
-        }
-        
-        #usernameInput {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border: 1px solid #2196f3;
-            background-color: #e3f2fd;
-        }
-        
-        #toolbar {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-        
-        #toolbar button {
-            padding: 8px 12px;
-            width: auto;
-            min-width: 30px;
-        }
-        
-        #messageHistory {
-            margin-bottom: 15px;
-            max-height: 20vh;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            font-size: 14px;
-            border: 1px solid #eee;
-            padding: 8px;
-            border-radius: 8px;
-            background-color: #f5f5f5;
-        }
-        
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            color: #666;
-            z-index: 1001;
-        }
-        
+        /* ... (CSS cũ giữ nguyên) ... */
+        * { box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; height: 100vh; position: relative; -webkit-text-size-adjust: 100%; touch-action: manipulation; }
+        #chatIcon { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: red; color: white; border: 2px solid white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-weight: bold; z-index: 1000; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); font-size: 12px; text-align: center; padding: 5px; }
+        #chatIcon:hover { opacity: 0.9; transform: scale(1.05); }
+        .popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: white; z-index: 999; padding: 15px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        #editorPopup { flex-direction: column; }
+        #messagePopup { flex-direction: column; }
+        #textEditor { width: 100%; height: 200px; margin-bottom: 10px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; resize: none; font-size: 16px; line-height: 1.5; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .button-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; width: 100%; }
+        button { padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; transition: all 0.2s; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        button:active { transform: scale(0.98); }
+        #startBtn { background-color: #4CAF50; color: white; }
+        #stopBtn { background-color: #f44336; color: white; }
+        #clearBtn { background-color: #ff9800; color: white; }
+        #clearAllBtn { background-color: #9c27b0; color: white; }
+        #sendBtn { background-color: #2196F3; color: white; grid-column: span 2; }
+        #replyBtn { background-color: #2196F3; color: white; }
+        #resendBtn { background-color: #4CAF50; color: white; }
+        #messageContent { font-size: 16px; line-height: 1.6; white-space: pre-wrap; padding: 12px; border: 1px solid #eee; border-radius: 8px; background-color: #f9f9f9; max-height: 50vh; overflow-y: auto; -webkit-overflow-scrolling: touch; word-wrap: break-word; }
+        .status { margin-top: 10px; font-style: italic; color: #666; font-size: 13px; }
+        .interim { color: #999; font-style: italic; margin-top: 5px; font-size: 14px; }
+        .message-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; width: 100%; }
+        #usernameInput { width: 100%; padding: 10px; font-size: 16px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #2196f3; background-color: #e3f2fd; display: block; margin-top:38px; }
+        #toolbar { display: flex; gap: 5px; margin-bottom: 10px; flex-wrap: wrap; }
+        #toolbar button { padding: 8px 12px; width: auto; min-width: 30px; }
+        #messageHistory { margin-bottom: 15px; max-height: 20vh; overflow-y: auto; -webkit-overflow-scrolling: touch; font-size: 14px; border: 1px solid #eee; padding: 8px; border-radius: 8px; background-color: #f5f5f5; }
+        .close-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 20px; cursor: pointer; color: #666; z-index: 1001; }
         @media (min-width: 600px) {
-            .popup {
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 90%;
-                max-width: 500px;
-                height: auto;
-                max-height: 90vh;
-                border-radius: 10px;
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-            }
-            
-            #textEditor {
-                height: 250px;
-            }
-            
-            .button-group {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            
-            #sendBtn {
-                grid-column: span 4;
-            }
-            
-            .message-buttons {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            #chatIcon {
-                width: 70px;
-                height: 70px;
-                font-size: 14px;
-            }
+            .popup { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 500px; height: auto; max-height: 90vh; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);}
+            #textEditor { height: 250px; }
+            .button-group { grid-template-columns: repeat(4, 1fr); }
+            #sendBtn { grid-column: span 4;}
+            .message-buttons { grid-template-columns: repeat(3, 1fr);}
+            #chatIcon { width: 70px; height: 70px; font-size: 14px;}
         }
     </style>
 </head>
 <body>
     <div id="chatIcon">Chat<br>Group</div>
-    
     <div id="editorPopup" class="popup">
         <button class="close-btn" onclick="toggleChat()">×</button>
-        <input id="usernameInput" placeholder="Tên bạn" />
-        
+        <!-- Dời ô nhập tên xuống dưới nút đóng, margin-top để tránh che -->
+        <input id="usernameInput" placeholder="Tên bạn" style="margin-top:38px;" />
         <div id="toolbar">
             <button onclick="formatText('bold')"><b>B</b></button>
             <button onclick="formatText('italic')"><i>I</i></button>
@@ -278,9 +56,7 @@
             <button onclick="formatText('strikeThrough')"><s>S</s></button>
             <input type="color" onchange="formatText('foreColor', this.value)" title="Đổi màu chữ" style="width: 40px; height: 36px; padding: 0; border: 1px solid #ccc; border-radius: 4px;" />
         </div>
-        
         <div contenteditable="true" id="textEditor" placeholder="Nhập tin nhắn hoặc sử dụng nút 'Bắt đầu nói'..."></div>
-
         <div class="button-group">
             <button id="startBtn">🎤 Nói</button>
             <button id="stopBtn" disabled>⏹️ Dừng</button>
@@ -291,7 +67,6 @@
         <div id="recordingStatus" class="status"></div>
         <div id="interimResult" class="interim"></div>
     </div>
-    
     <div id="messagePopup" class="popup">
         <button class="close-btn" onclick="toggleChat()">×</button>
         <div id="messageHistory"></div>
@@ -302,28 +77,23 @@
             <button id="replyBtn">↩️ Trả lời</button>
         </div>
     </div>
-
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    
     <script>
         // Khởi tạo Firebase
-           // Khởi tạo Firebase
-      const firebaseConfig = {
-  apiKey: "AIzaSyBIp68MT7Sh72-ZibE6iYr3hZCzTfCcY_k",
-  authDomain: "podcastideco1.firebaseapp.com",
-  projectId: "podcastideco1",
-  storageBucket: "podcastideco1.firebasestorage.app",
-  messagingSenderId: "219029042374",
-  appId: "1:219029042374:web:f6ddb9f7abe755aa7953c7",
-  measurementId: "G-0WH57T6Q58"
-};
-        
-        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBIp68MT7Sh72-ZibE6iYr3hZCzTfCcY_k",
+            authDomain: "podcastideco1.firebaseapp.com",
+            projectId: "podcastideco1",
+            storageBucket: "podcastideco1.firebasestorage.app",
+            messagingSenderId: "219029042374",
+            appId: "1:219029042374:web:f6ddb9f7abe755aa7953c7",
+            measurementId: "G-0WH57T6Q58"
+        };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-        
+
         // DOM elements
         const chatIcon = document.getElementById('chatIcon');
         const editorPopup = document.getElementById('editorPopup');
@@ -341,7 +111,7 @@
         const interimResult = document.getElementById('interimResult');
         const usernameInput = document.getElementById('usernameInput');
         const clearHistoryBtn = document.getElementById('clearHistoryBtn');
-        
+
         // Speech recognition
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition;
@@ -352,13 +122,14 @@
         const SILENCE_DELAY = 1500;
         let lastMessageTimestamp = 0;
         let currentMessage = '';
-        
+        let currentSender = '';
+
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
             recognition.continuous = true;
             recognition.interimResults = true;
             recognition.lang = 'vi-VN';
-            
+
             recognition.onstart = () => {
                 isListening = true;
                 startBtn.disabled = true;
@@ -370,26 +141,22 @@
                 textEditor.innerHTML = '';
                 interimResult.textContent = '';
             };
-            
+
             recognition.onend = () => {
                 isListening = false;
                 startBtn.disabled = false;
                 stopBtn.disabled = true;
-                
                 if (ignoreOnend) return;
-                
                 if (recordingStatus.textContent === "Đang nghe... Hãy nói gì đó") {
                     recordingStatus.textContent = "Đã dừng";
                 }
-                
                 clearTimeout(silenceTimer);
             };
-            
+
             recognition.onresult = (event) => {
                 clearTimeout(silenceTimer);
                 let interimTranscript = '';
                 let finalTranscriptTemp = '';
-
                 for (let i = event.resultIndex; i < event.results.length; i++) {
                     const transcript = event.results[i][0].transcript;
                     if (event.results[i].isFinal) {
@@ -398,21 +165,18 @@
                         interimTranscript += transcript;
                     }
                 }
-
                 finalTranscript += finalTranscriptTemp;
                 textEditor.innerHTML = finalTranscript + interimTranscript;
                 interimResult.textContent = interimTranscript;
-
                 if (interimTranscript) {
                     silenceTimer = setTimeout(() => {
                         interimResult.textContent = '';
                     }, 1500);
                 }
             };
-            
+
             recognition.onerror = (event) => {
                 console.error('Speech recognition error', event.error);
-                
                 if (event.error === 'no-speech') {
                     recordingStatus.textContent = 'Không phát hiện giọng nói. Hãy thử lại';
                     ignoreOnend = true;
@@ -425,14 +189,13 @@
                 } else {
                     recordingStatus.textContent = `Lỗi: ${event.error}`;
                 }
-                
                 clearTimeout(silenceTimer);
             };
         } else {
             recordingStatus.textContent = "Trình duyệt không hỗ trợ nhận dạng giọng nói";
             startBtn.disabled = true;
         }
-        
+
         // Event listeners
         chatIcon.addEventListener('click', toggleChat);
         startBtn.addEventListener('click', startRecording);
@@ -443,25 +206,25 @@
         replyBtn.addEventListener('click', replyMessage);
         resendBtn.addEventListener('click', resendMessage);
         clearHistoryBtn.addEventListener('click', clearHistory);
-        
+
         // Load username from localStorage
         usernameInput.value = localStorage.getItem('chat_username') || '';
-         // Sửa đổi listener Firebase
+
+        // Sửa lại phần lắng nghe Firebase, truyền luôn sender cho showMessage
         database.ref('messages').limitToLast(1).on('child_added', (snapshot) => {
             const message = snapshot.val();
             if (message.timestamp > lastMessageTimestamp) {
                 lastMessageTimestamp = message.timestamp;
-                
-                // Ưu tiên sử dụng cleanText nếu có, nếu không thì làm sạch text
                 const displayText = message.cleanText || cleanHtmlContent(message.text);
                 currentMessage = displayText;
-                showMessage(displayText);
+                currentSender = message.sender || 'Ẩn danh';
+                showMessage(displayText, currentSender);
             }
         });
-        
+
         // Load message history
         loadMessageHistory();
-        
+
         // Functions
         function toggleChat() {
             if (editorPopup.style.display === 'flex' || messagePopup.style.display === 'flex') {
@@ -481,7 +244,7 @@
                 }
             }
         }
-        
+
         function startRecording() {
             if (recognition) {
                 finalTranscript = '';
@@ -491,7 +254,7 @@
                 recognition.start();
             }
         }
-        
+
         function stopRecording() {
             if (isListening && recognition) {
                 ignoreOnend = true;
@@ -501,7 +264,7 @@
                 clearTimeout(silenceTimer);
             }
         }
-        
+
         function clearText() {
             textEditor.blur();
             textEditor.innerHTML = '';
@@ -509,7 +272,7 @@
             interimResult.textContent = '';
             recordingStatus.textContent = '';
         }
-        
+
         function clearAllMessages() {
             if (confirm("Bạn có chắc chắn muốn xóa TẤT CẢ tin nhắn? Hành động này không thể hoàn tác!")) {
                 database.ref('messages').remove()
@@ -520,6 +283,7 @@
                         recordingStatus.textContent = '';
                         lastMessageTimestamp = 0;
                         currentMessage = '';
+                        currentSender = '';
                         messagePopup.style.display = 'none';
                         editorPopup.style.display = 'flex';
                         loadMessageHistory();
@@ -530,54 +294,35 @@
                     });
             }
         }
-      function cleanHtmlContent(html) {
-    if (!html) return '';
-    html = html.replace(/&nbsp;/g, ' '); // <- thêm dòng này
-    const temp = document.createElement('div');
-    temp.innerHTML = html;
-    let cleanText = temp.textContent || temp.innerText || '';
-    cleanText = cleanText.replace(/\s+/g, ' ').trim();
-    return cleanText;
-}
-        // Sửa đổi hàm sendMessage
-        function sendMessage() {
-            let messageText = textEditor.innerHTML;
-            
-            // Làm sạch nội dung HTML triệt để trước khi gửi
-            messageText = cleanHtmlContent(messageText);
-            
-            if (messageText) {
-                currentMessage = messageText;
-                const timestamp = Date.now();
-                const sender = usernameInput.value.trim() || 'Ẩn danh';
-                localStorage.setItem('chat_username', sender);
-                
-                database.ref('messages').push({
-                    text: messageText,
-                    sender: sender,
-                    timestamp: timestamp,
-                    cleanText: messageText // Thêm trường cleanText để đảm bảo
-                });
-                
-                lastMessageTimestamp = timestamp;
-                showMessage(messageText);
-                editorPopup.style.display = 'none';
-                clearText();
-                
-                if (isListening && recognition) {
-                    recognition.stop();
-                }
-            }
+
+        function cleanHtmlContent(html) {
+            if (!html) return '';
+            html = html.replace(/&nbsp;/g, ' ');
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+            let cleanText = temp.textContent || temp.innerText || '';
+            cleanText = cleanText.replace(/\s+/g, ' ').trim();
+            return cleanText;
         }
-        
+
+        // Sửa lại hàm showMessage
+        function showMessage(text, sender = 'Ẩn danh') {
+            const cleanText = cleanHtmlContent(text);
+            messageContent.textContent = sender + ": " + cleanText;
+            editorPopup.style.display = 'none';
+            messagePopup.style.display = 'flex';
+            messageContent.scrollTop = messageContent.scrollHeight;
+        }
+
         function resendMessage() {
             if (currentMessage) {
                 const timestamp = Date.now();
                 database.ref('messages').push({
                     text: currentMessage,
+                    sender: currentSender || 'Ẩn danh',
                     timestamp: timestamp
                 });
-                
+
                 lastMessageTimestamp = timestamp;
                 recordingStatus.textContent = "Đã gửi lại tin nhắn";
                 setTimeout(() => {
@@ -585,28 +330,13 @@
                 }, 2000);
             }
         }
-        
-       // Sửa đổi hàm hiển thị tin nhắn
-        function showMessage(text) {
-            // Luôn làm sạch nội dung trước khi hiển thị
-            const cleanText = cleanHtmlContent(text);
-            messageContent.textContent = cleanText;
-            editorPopup.style.display = 'none';
-            messagePopup.style.display = 'flex';
-            messageContent.scrollTop = messageContent.scrollHeight;
-        }
-		// Thêm hàm hỗ trợ nếu cần
-function stripHtml(html) {
-    let tmp = document.createElement("div");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
-}
+
         function replyMessage() {
             messagePopup.style.display = 'none';
             editorPopup.style.display = 'flex';
             textEditor.focus();
         }
-        
+
         function loadMessageHistory() {
             database.ref('messages').limitToLast(8).on('value', (snapshot) => {
                 const historyDiv = document.getElementById('messageHistory');
@@ -623,17 +353,45 @@ function stripHtml(html) {
                 historyDiv.scrollTop = historyDiv.scrollHeight;
             });
         }
-        
+
         function clearHistory() {
             if (confirm("Bạn có chắc muốn xóa tất cả lịch sử chat?")) {
                 database.ref('messages').remove();
                 loadMessageHistory();
             }
         }
-        
+
         function formatText(command, value = null) {
             document.execCommand(command, false, value);
             textEditor.focus();
+        }
+
+        // Sửa lại hàm sendMessage, giữ nguyên như cũ
+        function sendMessage() {
+            let messageText = textEditor.innerHTML;
+            messageText = cleanHtmlContent(messageText);
+            if (messageText) {
+                currentMessage = messageText;
+                const timestamp = Date.now();
+                const sender = usernameInput.value.trim() || 'Ẩn danh';
+                currentSender = sender;
+                localStorage.setItem('chat_username', sender);
+
+                database.ref('messages').push({
+                    text: messageText,
+                    sender: sender,
+                    timestamp: timestamp,
+                    cleanText: messageText
+                });
+
+                lastMessageTimestamp = timestamp;
+                showMessage(messageText, sender);
+                editorPopup.style.display = 'none';
+                clearText();
+                if (isListening && recognition) {
+                    recognition.stop();
+                }
+            }
         }
     </script>
 </body>
